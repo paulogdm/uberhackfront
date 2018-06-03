@@ -43,13 +43,6 @@
         <div class="screen" id="vueapp">
 
           <div v-if="!showReport" class="container mt-3 animated fadeInLeft">
-            <div v-if="isMultiple">
-              <div class="card text-white bg-success mb-3">
-                <div class="card-body">
-                  <h5 class="card-title">Vamos traçar uma rota alternativa?</h5>
-                </div>
-              </div>
-            </div>
             <div class="input-group mb-2">
               <input type="text" class="form-control" placeholder="De" v-model="strFrom">
               <div class="input-group-append">
@@ -61,9 +54,8 @@
             <div class="input-group mb-2">
               <input type="text" class="form-control" placeholder="Para" v-model="strTo">
               <div class="input-group-append">
-                <button class="btn btn-primary" v-bind:class="" type="button" v-on:click="isMultiple ? traceMultipleRoute() : traceSingleRoute()">
-                  <i v-if="!isMultiple" class="fa fa-search fa-fw"></i>
-                  <i v-else class="fa fa-arrows-alt fa-fw"></i>
+                <button class="btn" type="button" v-on:click="isMultiple ? traceMultipleRoute() : traceSingleRoute()" v-bind:class="[isMultiple ? 'btn-success' : 'btn-primary']">
+                  <i class="fa fa-search fa-fw"></i>
                 </button>
               </div>
             </div>
@@ -145,8 +137,18 @@
           </div>
 
           <div id="map-canvas"></div>
+          <div v-if="isMultiple" class="container-footer" style="bottom: 0">
+            <div class="container mb-4">
+              <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">Vamos traçar uma rota alternativa?</h5>
+                  <p class="card-body">Infelizmente parece que a sua rota está realmente com problemas. <br> Mas fique tranquilo, você tem várias rotas alternativas, é só buscar aí em cima! </p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <div class="container-footer" style="bottom: 0">
+          <div v-else class="container-footer" style="bottom: 0">
             <div class="container mb-4">
               <button type="button" class="btn btn-danger btn-lg btn-block" v-on:click="showReport = !showReport">
               <i class="fa fa-exclamation fa-fw mr-2"></i>

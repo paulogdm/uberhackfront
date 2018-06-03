@@ -15,7 +15,10 @@ Sao Paulo (2-3 June 2018)
 
  1. Access [uberhacksp.now.sh](https://uberhacksp.now.sh)
 
- OR
+ 1.1 You can also access the Source Code by appending `/_src` to this url 
+ [source @ now.sh](https://uberhacksp.now.sh/_src)
+
+ 1.2 [Github Repo](https://github.com/paulogdm/uberhackfront)
 
  2. Install `serve`: 
 

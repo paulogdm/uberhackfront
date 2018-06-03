@@ -14,7 +14,7 @@
     <link rel="icon" href="/assets/favicon-192.png" sizes="192x192" type="image/png">
 
     <!-- FontAwesome -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -42,23 +42,116 @@
         <div class="camera"></div>
         <div class="screen" id="vueapp">
 
-          <div class="container mt-3">
+          <div v-if="!showReport" class="container mt-3 animated fadeInLeft">
+            <div v-if="isMultiple">
+              <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">Vamos traçar uma rota alternativa?</h5>
+                </div>
+              </div>
+            </div>
             <div class="input-group mb-2">
               <input type="text" class="form-control" placeholder="De" v-model="strFrom">
               <div class="input-group-append">
                 <button class="btn btn-primary" type="button" v-on:click="setStrFrom()">
-                  <i class="fas fa-fw fa-crosshairs"></i>
+                  <i class="fa fa-map-marker fa-fw"></i>
                 </button>
               </div>
             </div>
             <div class="input-group mb-2">
               <input type="text" class="form-control" placeholder="Para" v-model="strTo">
+              <div class="input-group-append">
+                <button class="btn btn-primary" v-bind:class="" type="button" v-on:click="isMultiple ? traceMultipleRoute() : traceSingleRoute()">
+                  <i v-if="!isMultiple" class="fa fa-search fa-fw"></i>
+                  <i v-else class="fa fa-arrows-alt fa-fw"></i>
+                </button>
+              </div>
             </div>
           </div>
+
+          <div v-else class="container mt-3 animated fadeInRight">
+
+            <div class="card">
+              <div class="card-body">
+                <div v-if="!busFlag && !trainFlag">
+                  <h5 class="card-title">Qual o problema da sua rota?</h5>
+                  <div class="my-2">
+                    <button class="btn my-4 btn-block btn-success btn-lg" type="button" v-on:click="trainFlag = true">
+                      Estou usando metrô ou trem
+                    </button>
+                    <button class="btn my-4 btn-block btn-success btn-lg" type="button" v-on:click="busFlag = true">
+                      Estou usando ônibus
+                    </button>
+                  </div>
+                </div>
+
+                <div v-if="busFlag" class="animated fadeInRight">
+                  <section class="check">
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" placeholder="No da linha">
+                    </div>
+
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input mx-2" id="acident">
+                      <label class="custom-control-label ml-2" for="acident">Acidente na via</label>
+                    </div>
+
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input mx-2" id="busbroken">
+                      <label class="custom-control-label ml-2" for="busbroken">Ônibus quebrado</label>
+                    </div>
+
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input mx-2" id="transito">
+                      <label class="custom-control-label ml-2" for="transito">Trânsito</label>
+                    </div>
+
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input mx-2" id="assalto">
+                      <label class="custom-control-label ml-2" for="assalto">Assalto</label>
+                    </div>
+
+                    <div class="clearfix mt-2">
+                      <button type="button" class="btn btn-outline-danger float-left" v-on:click="busFlag = false; showReport = false">Fechar</button>
+                      <button type="button" class="btn btn-primary float-right" v-on:click="report">Enviar</button>
+                    </div>
+                  </section>
+                </div>
+
+                <div v-if="trainFlag" class="animated fadeInRight">
+                 <section class="check">
+                   <div class="input-group mb-3">
+                     <input type="text" class="form-control" placeholder="Cor da linha">
+                   </div>
+
+                   <div class="custom-control custom-checkbox">
+                     <input type="checkbox" class="custom-control-input mx-2" id="failure">
+                     <label class="custom-control-label ml-2" for="failure">Falha Operacional</label>
+                   </div>
+
+                   <div class="custom-control custom-checkbox">
+                     <input type="checkbox" class="custom-control-input mx-2" id="slow">
+                     <label class="custom-control-label ml-2" for="slow">Lentidão</label>
+                   </div>
+
+                   <div class="clearfix mt-2">
+                     <button type="button" class="btn btn-outline-danger float-left" v-on:click="trainFlag = false; showReport = false">Fechar</button>
+                     <button type="button" class="btn btn-primary float-right" v-on:click="report">Enviar</button>
+                   </div>
+                 </section>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div id="map-canvas"></div>
+
           <div class="container-footer" style="bottom: 0">
             <div class="container mb-4">
-              <button type="button" class="btn btn-primary btn-lg btn-block" v-on:click="traceRoute(this.strFrom, this.strTo)">Reportar</button>
+              <button type="button" class="btn btn-danger btn-lg btn-block" v-on:click="showReport = !showReport">
+              <i class="fa fa-exclamation fa-fw mr-2"></i>
+              Problema na Rota
+            </button>
             </div>
           </div>
 

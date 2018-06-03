@@ -54,9 +54,8 @@
             <div class="input-group mb-2">
               <input type="text" class="form-control" placeholder="Para" v-model="strTo">
               <div class="input-group-append">
-                <button class="btn btn-primary" v-bind:class="" type="button" v-on:click="isMultiple ? traceMultipleRoute() : traceSingleRoute()">
-                  <i v-if="!isMultiple" class="fa fa-search fa-fw"></i>
-                  <i v-else class="fa fa-arrows-alt fa-fw"></i>
+                <button class="btn" type="button" v-on:click="isMultiple ? traceMultipleRoute() : traceSingleRoute()" v-bind:class="[isMultiple ? 'btn-success' : 'btn-primary']">
+                  <i class="fa fa-search fa-fw"></i>
                 </button>
               </div>
             </div>

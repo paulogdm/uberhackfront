@@ -1,3 +1,33 @@
-.plsalign {
-  min-width: 60px;
+.container {
+  z-index: 100;
+  position: relative;
+}
+
+#map-canvas {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: -200px;
+  left: 0;
+  right: 0;
+  z-index: 0;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  background: #009fff;
+  background: -webkit-linear-gradient(to left, #009fff, #F50000);
+  background: linear-gradient(to left, #009fff, #F50000);
+}
+
+.marvel-device {
+  margin: 0 auto;
+}
+
+.container-footer {
+  z-index: 100;
+  position: absolute;
+  margin-top: 0;
+  width: 100%;
 }

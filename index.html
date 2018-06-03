@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Uber Hack S2 </title>
+    <meta charset="utf-8">
+    <meta name="description" content="UBER HACK HELL YEAH">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="paulogdm,paulo mitri, paulogdemitri">
+    <meta name="author" content="paulogdm">
+
+    <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/assets/favicon-48.png" sizes="48x48" type="image/png">
+    <link rel="icon" href="/assets/favicon-62.png" sizes="62x62" type="image/png">
+    <link rel="icon" href="/assets/favicon-192.png" sizes="192x192" type="image/png">
+
+    <!-- FontAwesome -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400" rel="stylesheet">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
+  </head>
+
+  <body class="background">
+    <div class="marvel-device note8 mt-4">
+        <div class="inner"></div>
+        <div class="overflow">
+            <div class="shadow"></div>
+        </div>
+        <div class="speaker"></div>
+        <div class="sensors"></div>
+        <div class="more-sensors"></div>
+        <div class="sleep"></div>
+        <div class="volume"></div>
+        <div class="camera"></div>
+        <div class="screen" id="vueapp">
+
+          <div v-if="!showReport" class="container mt-3 animated fadeInLeft">
+            <div v-if="isMultiple">
+              <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">Vamos traçar uma rota alternativa?</h5>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-2">
+              <input type="text" class="form-control" placeholder="De" v-model="strFrom">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button" v-on:click="setStrFrom()">
+                  <i class="fa fa-map-marker fa-fw"></i>
+                </button>
+              </div>
+            </div>
+            <div class="input-group mb-2">
+              <input type="text" class="form-control" placeholder="Para" v-model="strTo">
+              <div class="input-group-append">
+                <button class="btn btn-primary" v-bind:class="" type="button" v-on:click="isMultiple ? traceMultipleRoute() : traceSingleRoute()">
+                  <i v-if="!isMultiple" class="fa fa-search fa-fw"></i>
+                  <i v-else class="fa fa-arrows-alt fa-fw"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div v-else class="container mt-3 animated fadeInRight">
+
+            <div class="card">
+              <div class="card-body">
+                <div v-if="!busFlag && !trainFlag">
+                  <h5 class="card-title">Qual o problema da sua rota?</h5>
+                  <div class="my-2">
+                    <button class="btn my-4 btn-block btn-success btn-lg" type="button" v-on:click="trainFlag = true">
+                      Estou usando metrô ou trem
+                    </button>
+                    <button class="btn my-4 btn-block btn-success btn-lg" type="button" v-on:click="busFlag = true">
+                      Estou usando ônibus
+                    </button>
+                  </div>
+                </div>
+
+                <div v-if="busFlag" class="animated fadeInRight">
+                  <section class="check">
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" placeholder="No da linha">
+                    </div>
+
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input mx-2" id="acident">
+                      <label class="custom-control-label ml-2" for="acident">Acidente na via</label>
+                    </div>
+
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input mx-2" id="busbroken">
+                      <label class="custom-control-label ml-2" for="busbroken">Ônibus quebrado</label>
+                    </div>
+
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input mx-2" id="transito">
+                      <label class="custom-control-label ml-2" for="transito">Trânsito</label>
+                    </div>
+
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input mx-2" id="assalto">
+                      <label class="custom-control-label ml-2" for="assalto">Assalto</label>
+                    </div>
+
+                    <div class="clearfix mt-2">
+                      <button type="button" class="btn btn-outline-danger float-left" v-on:click="busFlag = false; showReport = false">Fechar</button>
+                      <button type="button" class="btn btn-primary float-right" v-on:click="report">Enviar</button>
+                    </div>
+                  </section>
+                </div>
+
+                <div v-if="trainFlag" class="animated fadeInRight">
+                 <section class="check">
+                   <div class="input-group mb-3">
+                     <input type="text" class="form-control" placeholder="Cor da linha">
+                   </div>
+
+                   <div class="custom-control custom-checkbox">
+                     <input type="checkbox" class="custom-control-input mx-2" id="failure">
+                     <label class="custom-control-label ml-2" for="failure">Falha Operacional</label>
+                   </div>
+
+                   <div class="custom-control custom-checkbox">
+                     <input type="checkbox" class="custom-control-input mx-2" id="slow">
+                     <label class="custom-control-label ml-2" for="slow">Lentidão</label>
+                   </div>
+
+                   <div class="clearfix mt-2">
+                     <button type="button" class="btn btn-outline-danger float-left" v-on:click="trainFlag = false; showReport = false">Fechar</button>
+                     <button type="button" class="btn btn-primary float-right" v-on:click="report">Enviar</button>
+                   </div>
+                 </section>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="map-canvas"></div>
+
+          <div class="container-footer" style="bottom: 0">
+            <div class="container mb-4">
+              <button type="button" class="btn btn-danger btn-lg btn-block" v-on:click="showReport = !showReport">
+              <i class="fa fa-exclamation fa-fw mr-2"></i>
+              Problema na Rota
+            </button>
+            </div>
+          </div>
+
+        </div>
+    </div>
+  </body>
+  <!-- MAPS -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_M0fU_hMdpM6xaY9r2V9FWuhrjmp5G1Y"></script>
+  <link rel="stylesheet" type="text/css" href="/index.css"/>
+  <script src="/index.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="devices.min.css" type="text/css">
+
+</html>
